@@ -1,13 +1,26 @@
-import { Module } from '@nestjs/common';
+/*import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
+import { CredencialAcessoService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CredencialEntity } from './interfaces/credencialAcesso.entity';
 
 @Module({
   imports: [DatabaseModule,TypeOrmModule.forFeature([CredencialEntity])],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [CredencialAcessoService],
 })
-export class AppModule {}
+export class AppModule {}*/
+
+import { Module } from "@nestjs/common";
+import { CredencialAcessoService } from "./app.service";
+import { PrismaService } from "./database/PrismaService";
+import { AppController } from "./app.controller";
+
+
+@Module({
+  imports:[],
+  controllers: [AppController],
+  providers: [CredencialAcessoService, PrismaService],
+  
+})
+export class CredencialAcessoModule {}

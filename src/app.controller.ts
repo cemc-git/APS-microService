@@ -1,20 +1,32 @@
 import { Controller, Get, Logger } from '@nestjs/common';
-import { AppService } from './app.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { CredencialAcessoService } from './app.service';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CredencialAcesso } from './interfaces/credencialAcesso.interface';
+import { CreateCredencialAcessoDto } from './dto/create-credencial-acesso.dto';
+import { UpdateCredencialAcessoDto } from './dto/update-credencial-acesso.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: CredencialAcessoService) {}
 
-  private readonly logger = new Logger(AppController.name);
+  //private readonly logger = new Logger(AppController.name);
 
-  @MessagePattern('find')
-  async index(login:string, senha: string): Promise<CredencialAcesso> {
-    return this.appService.find(login, senha);
+  @MessagePattern('login')
+  async index(@Payload() data:CreateCredencialAcessoDto): Promise<CredencialAcesso> {
+    console.log("chegou controller login")
+    //this.logger.log(`Teste User: ${JSON.stringify(data)}`);
+    return this.appService.existeCredencial(data);
   }
-  @MessagePattern('create')
-  async criar(login:string, senha:string): Promise<CredencialAcesso> {
-    return this.appService.create(login,senha);
+
+  @MessagePattern('create-user')
+  async criar(@Payload() data: CreateCredencialAcessoDto): Promise<CredencialAcesso> {
+    
+    return this.appService.createCredencial(data);
+  }
+
+  @MessagePattern('alter-password')
+  async update(data: UpdateCredencialAcessoDto): Promise<CredencialAcesso> {
+    
+    return this.appService.updatePassword(data);
   }
 }
